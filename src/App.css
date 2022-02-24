@@ -76,6 +76,7 @@ section {
 .tentative {
   font-size: 14px;
   display: none;
+  margin-bottom: 5px;
 }
 .score {
   font-size: 14px;
