@@ -6,17 +6,20 @@ import { useState } from 'react';
 function App() {
   const [user, setUser] = useState('');
   const [users, setUsers] = useState([]);
-  const search = async () => {
+  const inputBar = document.querySelector('input')
+  const search = async (e) => {
     const res = await fetch(`https://api.github.com/search/users?q=${user}`);
     const data = await res.json();
     const response = data.items;
     setUsers(response);
     console.log(response);
+    inputBar.value = ""
   };
   const submit = (e) => {
     e.preventDefault();
     search();
   };
+  
   return (
     <div className='App'>
       <header>

@@ -38,7 +38,7 @@ header span:hover {
   transition: all ease 750ms;
 }
 /* Input.js */
-.input {
+form {
   display: flex;
   align-items: center;
   margin-top: 20px;
