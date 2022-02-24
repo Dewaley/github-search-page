@@ -29,22 +29,27 @@ function App() {
         <Input user={user} setUser={setUser} search={search} submit={submit} />
       </header>
       {users !== {} && (
-        <section>
+        <div className='container'>
           {users.map((profile) => {
             return (
-              <div>
-                <img src={`${profile.avatar_url}`} alt='' className='profilePic'/>
-                <p>
-                  {profile.login}
-                </p>
-                <div className="tentative">
-                  <span>Score: {profile.score}</span>
-                  <a href={`github.com/${profile.login}`}>github.com/{profile.login}</a>
+              <section key={profile.id}>
+                <img
+                  src={`${profile.avatar_url}`}
+                  alt=''
+                  className='profilePic'
+                />
+                <p className='username'>{profile.login}</p>
+                <div className='tentative'>
+                  <span className='score'>Score: {profile.score}</span>
+                  <a href={`github.com/${profile.login}`} className='link'>
+                    <GoMarkGithub />
+                    github.com/{profile.login}
+                  </a>
                 </div>
-              </div>
+              </section>
             );
           })}
-        </section>
+        </div>
       )}
     </div>
   );
