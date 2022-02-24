@@ -1,13 +1,19 @@
-import React from 'react'
-import {GoSearch} from 'react-icons/go'
+import React from 'react';
+import { GoSearch } from 'react-icons/go';
 
-const Input = () => {
+const Input = ({ user, setUser }) => {
   return (
-    <div className='input'>
-     <input type="text" name="" id="" placeholder='Username' />
-     <GoSearch/>
-    </div>
-  )
-}
+    <form
+      className='input'
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log(user);
+      }}
+    >
+      <input type='text' name='' id='' placeholder='Username' value={user} onChange={(e)=>setUser(e.target.value)}/>
+      <GoSearch/>
+    </form>
+  );
+};
 
-export default Input
+export default Input;
