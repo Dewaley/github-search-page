@@ -9,7 +9,7 @@ function App() {
   const search = async () => {
     const res = await fetch(`https://api.github.com/search/users?q=${user}`);
     const data = await res.json();
-    const response = data.items
+    const response = data.items;
     setUsers(response);
     console.log(response);
   };
@@ -28,11 +28,24 @@ function App() {
         </h1>
         <Input user={user} setUser={setUser} search={search} submit={submit} />
       </header>
-      {users !== {} && (<section>
-        {users.map((profile) => {
-          return <div>{profile.id}</div>;
-        })}
-      </section>)}
+      {users !== {} && (
+        <section>
+          {users.map((profile) => {
+            return (
+              <div>
+                <img src={`${profile.avatar_url}`} alt='' className='profilePic'/>
+                <p>
+                  {profile.login}
+                </p>
+                <div className="tentative">
+                  <span>Score: {profile.score}</span>
+                  <a href={`github.com/${profile.login}`}>github.com/{profile.login}</a>
+                </div>
+              </div>
+            );
+          })}
+        </section>
+      )}
     </div>
   );
 }
