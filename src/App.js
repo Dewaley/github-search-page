@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './App.css';
 import Input from './components/Input';
 import { GoMarkGithub } from 'react-icons/go';
@@ -6,13 +7,41 @@ import { useState, useEffect } from 'react';
 function App() {
   const [user, setUser] = useState('');
   const [users, setUsers] = useState([]);
-  const [page, setPage] = useState('2');
+  const [page, setPage] = useState('1');
+  const [list, setList] = useState([]);
   const inputBar = document.querySelector('input');
   const pager = document.querySelectorAll('.pager');
+  const pages = [];
+  var pagination;
+
+  const search = async (e) => {
+    const url = `https://api.github.com/search/users?q=${user}&page=${page}`;
+    console.log(url);
+    const res = await fetch(url);
+    const data = await res.json();
+    const response = data.items;
+    const count = data.total_count;
+    pagination = Math.ceil(count / 30);
+    if (pagination > 5) {
+      pagination = 5;
+    }
+    for (var i = 1; i <= pagination; i++) {
+      pages.push(i);
+    }
+    setUsers(response);
+    setList(pages);
+    inputBar.value = '';
+  };
+  const submit = (e) => {
+    e.preventDefault();
+    search();
+  };
   pager.forEach((number) => {
     number.addEventListener('click', () => {
       setPage(number.innerHTML);
-      console.log(number.classList);
+      search();
+      alert(number.innerHTML)
+      console.log(number.innerHTML);
     });
     if (page === number.innerHTML) {
       number.classList.add('active');
@@ -20,24 +49,6 @@ function App() {
       number.classList.remove('active');
     }
   });
-  const search = async (e) => {
-    if (user === '') {
-      alert('Hello World');
-    } else {
-      const res = await fetch(`https://api.github.com/search/users?q=${user}`);
-      const data = await res.json();
-      const response = data.items;
-      const count = data.total_count;
-      setUsers(response);
-      console.log(data.total_count);
-      inputBar.value = '';
-    }
-  };
-  const submit = (e) => {
-    e.preventDefault();
-    search();
-  };
-
   return (
     <div className='App'>
       <header>
@@ -49,12 +60,12 @@ function App() {
         </h1>
         <Input setUser={setUser} search={search} submit={submit} />
       </header>
-      {users !== [] ? (
+      {users !== [] && (
         <div className='main'>
           <div className='pageIndentation'>
-            <span className='pager active'>1</span>
-            <span className='pager'>2</span>
-            <span className='pager'>3</span>
+            {list.map((indent,index) => (
+              <span className='pager' key={index}>{indent}</span>
+            ))}
           </div>
           <div className='container'>
             {users.map((profile) => {
@@ -78,8 +89,6 @@ function App() {
             })}
           </div>
         </div>
-      ) : (
-        <div>Error</div>
       )}
     </div>
   );
