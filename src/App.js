@@ -1,25 +1,43 @@
 import './App.css';
 import Input from './components/Input';
 import { GoMarkGithub } from 'react-icons/go';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [user, setUser] = useState('');
   const [users, setUsers] = useState([]);
-  const inputBar = document.querySelector('input')
+  const [page, setPage] = useState('2');
+  const inputBar = document.querySelector('input');
+  const pager = document.querySelectorAll('.pager');
+  pager.forEach((number) => {
+    number.addEventListener('click', () => {
+      setPage(number.innerHTML);
+      console.log(number.classList);
+    });
+    if (page === number.innerHTML) {
+      number.classList.add('active');
+    } else {
+      number.classList.remove('active');
+    }
+  });
   const search = async (e) => {
-    const res = await fetch(`https://api.github.com/search/users?q=${user}`);
-    const data = await res.json();
-    const response = data.items;
-    setUsers(response);
-    console.log(response);
-    inputBar.value = ""
+    if (user === '') {
+      alert('Hello World');
+    } else {
+      const res = await fetch(`https://api.github.com/search/users?q=${user}`);
+      const data = await res.json();
+      const response = data.items;
+      const count = data.total_count;
+      setUsers(response);
+      console.log(data.total_count);
+      inputBar.value = '';
+    }
   };
   const submit = (e) => {
     e.preventDefault();
     search();
   };
-  
+
   return (
     <div className='App'>
       <header>
@@ -29,30 +47,39 @@ function App() {
             <span>Github User Search</span>
           </a>
         </h1>
-        <Input user={user} setUser={setUser} search={search} submit={submit} />
+        <Input setUser={setUser} search={search} submit={submit} />
       </header>
-      {users !== {} && (
-        <div className='container'>
-          {users.map((profile) => {
-            return (
-              <section key={profile.id}>
-                <img
-                  src={`${profile.avatar_url}`}
-                  alt=''
-                  className='profilePic'
-                />
-                <p className='username'>{profile.login}</p>
-                <div className='tentative'>
-                  <span className='score'>Score: {profile.score}</span>
-                  <a href={`github.com/${profile.login}`} className='link'>
-                    <GoMarkGithub />
-                    github.com/{profile.login}
-                  </a>
-                </div>
-              </section>
-            );
-          })}
+      {users !== [] ? (
+        <div className='main'>
+          <div className='pageIndentation'>
+            <span className='pager active'>1</span>
+            <span className='pager'>2</span>
+            <span className='pager'>3</span>
+          </div>
+          <div className='container'>
+            {users.map((profile) => {
+              return (
+                <section key={profile.id}>
+                  <img
+                    src={`${profile.avatar_url}`}
+                    alt=''
+                    className='profilePic'
+                  />
+                  <p className='username'>{profile.login}</p>
+                  <div className='tentative'>
+                    <span className='score'>Score: {profile.score}</span>
+                    <a href={`github.com/${profile.login}`} className='link'>
+                      <GoMarkGithub />
+                      github.com/{profile.login}
+                    </a>
+                  </div>
+                </section>
+              );
+            })}
+          </div>
         </div>
+      ) : (
+        <div>Error</div>
       )}
     </div>
   );

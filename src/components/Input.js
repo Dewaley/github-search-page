@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoSearch } from 'react-icons/go';
 
-const Input = ({ user, setUser, search, submit }) => {
+const Input = ({ setUser, search, submit }) => {
   return (
     <form onSubmit={submit}>
       <input
