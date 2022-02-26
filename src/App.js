@@ -9,14 +9,13 @@ function App() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState('1');
   const [list, setList] = useState([]);
-  const pager = document.querySelectorAll('.pager')
+  var pager = document.querySelectorAll('.pager');
   const inputBar = document.querySelector('input');
   const pages = [];
   var pagination;
 
-  const search = async (e) => {
+  const getUsers = async (e) => {
     const url = `https://api.github.com/search/users?q=${user}&page=${page}`;
-
     console.log(url);
     const res = await fetch(url);
     const data = await res.json();
@@ -29,29 +28,41 @@ function App() {
     for (var i = 1; i <= pagination; i++) {
       pages.push(i);
     }
+    pager = document.querySelectorAll('.pager');
     setUsers(response);
+    setPage('1');
     setList(pages);
     inputBar.value = '';
   };
   const submit = (e) => {
     e.preventDefault();
-    search();
+    getUsers();
   };
-  useEffect(()=> {
-    const pager = document.querySelectorAll('.pager');
-  },[pager])
+
+  
+  useEffect(()=>{
+    
+  return
+  },[page,list])    
+
+useEffect(() => {
   pager.forEach((number) => {
-    number.addEventListener('click', () => {
-      setPage(number.innerHTML);
-      console.log('HELLO');
-      search();
-    })
     if (page === number.innerHTML) {
       number.classList.add('active');
     } else {
       number.classList.remove('active');
     }
   });
+
+  return () => {
+    fetch(`https://api.github.com/search/users?q=${user}&page=${page}`)
+        .then(res => {
+          res.json();
+          console.log(res.json())
+        })
+      }
+}, [page,list])
+
   return (
     <div className='App'>
       <header>
@@ -61,15 +72,22 @@ function App() {
             <span>Github User Search</span>
           </a>
         </h1>
-        <Input setUser={setUser} search={search} submit={submit} />
+        <Input setUser={setUser} getUsers={getUsers} submit={submit} />
       </header>
       {users !== [] && (
         <div className='main'>
           <div className='pageIndentation'>
             <span className='pager'></span>
             {list.map((indent, index) => (
-              <span className='pager' key={index}>
-                {indent}
+              <span
+                className='pager'
+                key={index}
+                onClick={() => {
+                  setPage(index + 1);
+                  console.log(index + 1);
+                }}
+              >
+                {index + 1}
               </span>
             ))}
           </div>
