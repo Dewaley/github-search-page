@@ -9,13 +9,14 @@ function App() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState('1');
   const [list, setList] = useState([]);
+  const pager = document.querySelectorAll('.pager')
   const inputBar = document.querySelector('input');
-  const pager = document.querySelectorAll('.pager');
   const pages = [];
   var pagination;
 
   const search = async (e) => {
     const url = `https://api.github.com/search/users?q=${user}&page=${page}`;
+
     console.log(url);
     const res = await fetch(url);
     const data = await res.json();
@@ -36,13 +37,15 @@ function App() {
     e.preventDefault();
     search();
   };
+  useEffect(()=> {
+    const pager = document.querySelectorAll('.pager');
+  },[pager])
   pager.forEach((number) => {
     number.addEventListener('click', () => {
       setPage(number.innerHTML);
+      console.log('HELLO');
       search();
-      alert(number.innerHTML)
-      console.log(number.innerHTML);
-    });
+    })
     if (page === number.innerHTML) {
       number.classList.add('active');
     } else {
@@ -63,8 +66,11 @@ function App() {
       {users !== [] && (
         <div className='main'>
           <div className='pageIndentation'>
-            {list.map((indent,index) => (
-              <span className='pager' key={index}>{indent}</span>
+            <span className='pager'></span>
+            {list.map((indent, index) => (
+              <span className='pager' key={index}>
+                {indent}
+              </span>
             ))}
           </div>
           <div className='container'>
