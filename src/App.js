@@ -57,6 +57,8 @@ function App() {
         breakLabel={'...'}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={2}
         containerClassName={'pagination'}
         pageClassName={'pager'}
         pageLinkClassName={'pager-link'}
