@@ -86,7 +86,10 @@ function App() {
                   <p className='username'>{profile.login}</p>
                   <div className='tentative'>
                     <span className='score'>Score: {profile.score}</span>
-                    <a href={`github.com/${profile.login}`} className='link'>
+                    <a
+                      href={`https://github.com/${profile.login}`}
+                      className='link'
+                    >
                       <GoMarkGithub />
                       github.com/{profile.login}
                     </a>
