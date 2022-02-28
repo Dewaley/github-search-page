@@ -20,7 +20,12 @@ function App() {
       );
       const data = await res.json();
       const response = data.items;
-      setPageCount(Math.ceil(data.total_count / 30));
+      const total_count = Math.ceil(data.total_count / 30)
+      if (total_count > 34){
+        setPageCount(34)
+      } else {
+        setPageCount(total_count);
+      }
       setUsers(response);
       console.log(data.total_count);
     }
