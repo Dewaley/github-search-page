@@ -2,66 +2,43 @@
 import './App.css';
 import Input from './components/Input';
 import { GoMarkGithub } from 'react-icons/go';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import ReactPaginate from 'react-paginate';
 
 function App() {
   const [user, setUser] = useState('');
   const [users, setUsers] = useState([]);
-  const [page, setPage] = useState('1');
-  const [list, setList] = useState([]);
-  var pager = document.querySelectorAll('.pager');
-  const inputBar = document.querySelector('input');
-  const pages = [];
-  var pagination;
-
-  const getUsers = async (e) => {
-    const url = `https://api.github.com/search/users?q=${user}&page=${page}`;
-    console.log(url);
-    const res = await fetch(url);
-    const data = await res.json();
-    const response = data.items;
-    const count = data.total_count;
-    pagination = Math.ceil(count / 30);
-    if (pagination > 5) {
-      pagination = 5;
-    }
-    for (var i = 1; i <= pagination; i++) {
-      pages.push(i);
-    }
-    pager = document.querySelectorAll('.pager');
-    setUsers(response);
-    setPage('1');
-    setList(pages);
-    inputBar.value = '';
-  };
-  const submit = (e) => {
-    e.preventDefault();
-    getUsers();
-  };
-
-  
-  useEffect(()=>{
-    
-  return
-  },[page,list])    
-
-useEffect(() => {
-  pager.forEach((number) => {
-    if (page === number.innerHTML) {
-      number.classList.add('active');
+  const [pageCount, setPageCount] = useState(1);
+  const submit = async (e) => {
+    if (e.target.value === '') {
+      alert('Enter a username');
     } else {
-      number.classList.remove('active');
+      e.preventDefault();
+      var page = 1;
+      const res = await fetch(
+        `https://api.github.com/search/users?q=${user}&page=${page}`
+      );
+      const data = await res.json();
+      const response = data.items;
+      setPageCount(Math.ceil(data.total_count / 30));
+      setUsers(response);
+      console.log(data.total_count);
     }
-  });
+  };
 
-  return () => {
-    fetch(`https://api.github.com/search/users?q=${user}&page=${page}`)
-        .then(res => {
-          res.json();
-          console.log(res.json())
-        })
-      }
-}, [page,list])
+  const handlePageClick = (data) => {
+    console.log(data.selected + 1);
+    const getData = async () => {
+      var page = data.selected + 1;
+      const res = await fetch(
+        `https://api.github.com/search/users?q=${user}&page=${page}`
+      );
+      const dat = await res.json();
+      const response = dat.items;
+      setUsers(response);
+    };
+    getData();
+  };
 
   return (
     <div className='App'>
@@ -72,25 +49,26 @@ useEffect(() => {
             <span>Github User Search</span>
           </a>
         </h1>
-        <Input setUser={setUser} getUsers={getUsers} submit={submit} />
+        <Input setUser={setUser} submit={submit} />
       </header>
+      {pageCount > 1 && <ReactPaginate
+        previousLabel={'<<'}
+        nextLabel={'>>'}
+        breakLabel={'...'}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        pageClassName={'pager'}
+        pageLinkClassName={'pager-link'}
+        previousClassName={'pager'}
+        previousLinkClassName={'pager-link'}
+        nextClassName={'pager'}
+        nextLinkClassName={'pager-link'}
+        breakClassName={'pager'}
+        breakLinkClassName={'pager-link'}
+      />}
       {users !== [] && (
         <div className='main'>
-          <div className='pageIndentation'>
-            <span className='pager'></span>
-            {list.map((indent, index) => (
-              <span
-                className='pager'
-                key={index}
-                onClick={() => {
-                  setPage(index + 1);
-                  console.log(index + 1);
-                }}
-              >
-                {index + 1}
-              </span>
-            ))}
-          </div>
           <div className='container'>
             {users.map((profile) => {
               return (

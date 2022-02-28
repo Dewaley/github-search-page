@@ -57,6 +57,30 @@ input {
   outline: none;
   padding: 7px;
 }
+/* pagination */
+.pagination {
+  display: flex;
+  justify-content:center;
+  border:1px solid white;
+  background-color: white;
+  margin-bottom: 15px;
+}
+.pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 1px solid black;
+}
+.pager:last-child {
+  border-right: 1px solid black;
+}
+.pager-link {
+  cursor:pointer;
+}
 /* Results */
 .main {
   width: 90vw;
