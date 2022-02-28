@@ -27,12 +27,10 @@ function App() {
         setPageCount(total_count);
       }
       setUsers(response);
-      console.log(data.total_count);
     }
   };
 
   const handlePageClick = (data) => {
-    console.log(data.selected + 1);
     const getData = async () => {
       var page = data.selected + 1;
       const res = await fetch(
