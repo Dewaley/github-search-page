@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoSearch } from 'react-icons/go';
 
-const Input = ({ setUser, search, setUsers, user, submit }) => {
+const Input = ({ setUser, submit }) => {
   return (
     <form onSubmit={submit}>
       <input
@@ -12,7 +12,7 @@ const Input = ({ setUser, search, setUsers, user, submit }) => {
         onChange={(e) => setUser(e.target.value)}
         className='input'
       />
-      <GoSearch onClick={search} />
+      <GoSearch onClick={submit} />
     </form>
   );
 };
