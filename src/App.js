@@ -47,7 +47,7 @@ function App() {
     <div className='App'>
       <header>
         <h1>
-          <a href='google.com'>
+          <a href={'/#'}>
             <GoMarkGithub className='logo' size={20} />
             <span>Github User Search</span>
           </a>
