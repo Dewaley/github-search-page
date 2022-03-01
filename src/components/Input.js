@@ -12,7 +12,7 @@ const Input = ({ setUser, submit }) => {
         onChange={(e) => setUser(e.target.value)}
         className='input'
       />
-      <GoSearch onClick={submit} />
+      <GoSearch onClick={submit} className="search" />
     </form>
   );
 };

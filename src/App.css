@@ -57,6 +57,9 @@ input {
   outline: none;
   padding: 7px;
 }
+.search {
+  cursor: pointer;
+}
 /* pagination */
 .pagination {
   display: flex;
