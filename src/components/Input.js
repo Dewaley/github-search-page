@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoSearch } from 'react-icons/go';
 
-const Input = ({ setUser, submit }) => {
+const Input = ({ setUser, submit,user }) => {
   return (
     <form onSubmit={submit}>
       <input
@@ -9,6 +9,7 @@ const Input = ({ setUser, submit }) => {
         name=''
         id=''
         placeholder='Username'
+        value={user}
         onChange={(e) => setUser(e.target.value)}
         className='input'
       />

@@ -27,6 +27,7 @@ function App() {
         setPageCount(total_count);
       }
       setUsers(response);
+      setUser('')
     }
   };
 
@@ -52,7 +53,7 @@ function App() {
             <span>Github User Search</span>
           </a>
         </h1>
-        <Input setUser={setUser} submit={submit} />
+        <Input setUser={setUser} submit={submit} user={user}/>
       </header>
       {pageCount > 1 && <ReactPaginate
         previousLabel={'<<'}
